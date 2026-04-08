@@ -30,6 +30,22 @@ To ensure a practical balance between speed and accuracy, we evaluate the models
 * **F1-Score**: $F1 = 2 \cdot \frac{Pr \cdot Rc}{Pr + Rc}$
 * **False Positive Rate (FPR)**: Critical for reducing administrative overhead.
 
+## Project Structure
+This repository is organized to separate data, code, and documentation cleanly. As the project evolves, we plan to implement the following structure:
+
+```text
+├── docs/               # Project proposals and future reports.
+├── references/         # Academic papers and cited literature.
+├── data/               # Instructions for downloading CICIDS2017 (raw data is not tracked).
+│   └── README.md       # Download links and dataset details.
+├── notebooks/          # (Planned) Jupyter Notebooks for Exploratory Data Analysis (EDA).
+├── src/                # (Planned) Python scripts for the models and FFT logic.
+├── results/            # (Planned) Confusion matrices, F1-score plots, and signal graphs.
+├── .gitignore          # Rules to ignore large data files and __pycache__.
+├── LICENSE             # (Planned) Open source license (e.g., MIT/GPL).
+└── README.md           # The main landing page (this file).
+```
+
 ## References
 * Buczak, A.L. and Guven, E. (2016). A Survey of Data Mining and Machine Learning Methods for Cyber Security Intrusion Detection. *IEEE Communications Surveys & Tutorials*.
 * Farnaaz, N. and Jabbar, M.A. (2016). Random Forest Modeling for Network Intrusion Detection System. *Procedia Computer Science*.
