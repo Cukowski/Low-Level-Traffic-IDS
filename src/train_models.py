@@ -93,6 +93,39 @@ def plot_model_metrics(metrics_df: pd.DataFrame, output_path: Path) -> None:
     plt.close(fig)
 
 
+def save_random_forest_feature_importance(
+    model: RandomForestClassifier,
+    feature_names: pd.Index,
+    table_path: Path,
+    figure_path: Path,
+    top_n: int = 15,
+) -> pd.DataFrame:
+    feature_importance = (
+        pd.DataFrame(
+            {
+                "feature": feature_names,
+                "importance": model.feature_importances_,
+            }
+        )
+        .sort_values("importance", ascending=False)
+        .head(top_n)
+        .reset_index(drop=True)
+    )
+    feature_importance.to_csv(table_path, index=False)
+
+    plot_data = feature_importance.sort_values("importance", ascending=True)
+    fig, ax = plt.subplots(figsize=(9, 6))
+    ax.barh(plot_data["feature"], plot_data["importance"], color="#4c78a8")
+    ax.set_title("Random Forest Top Feature Importances")
+    ax.set_xlabel("Importance")
+    ax.set_ylabel("Feature")
+    fig.tight_layout()
+    fig.savefig(figure_path, dpi=150)
+    plt.close(fig)
+
+    return feature_importance
+
+
 def main() -> int:
     args = parse_args()
 
@@ -163,6 +196,14 @@ def main() -> int:
             f"Confusion Matrix: {model_name}",
             figures_dir / f"confusion_matrix_{slug}.png",
         )
+
+        if model_name == "Random Forest":
+            save_random_forest_feature_importance(
+                model,
+                X_train.columns,
+                tables_dir / "random_forest_top_features.csv",
+                figures_dir / "random_forest_top_features.png",
+            )
 
     metrics_df = save_metrics_csv(metrics, tables_dir / "metrics_summary.csv")
     plot_model_metrics(metrics_df, figures_dir / "model_metrics_comparison.png")

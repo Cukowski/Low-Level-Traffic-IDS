@@ -24,6 +24,8 @@ Running the training script creates:
 - `results/figures/confusion_matrix_logistic_regression.png`
 - `results/figures/confusion_matrix_random_forest.png`
 - `results/figures/model_metrics_comparison.png`
+- `results/tables/random_forest_top_features.csv`
+- `results/figures/random_forest_top_features.png`
 
 ## Metrics to Discuss
 
@@ -41,6 +43,12 @@ Use the confusion matrices to explain concrete error types:
 
 - False positives: Benign traffic flagged as malicious.
 - False negatives: Malicious traffic missed by the IDS.
+
+Use the Random Forest feature importance outputs to support interpretation:
+
+- Feature importance highlights which cleaned numeric traffic features were most useful for the Random Forest model.
+- High-importance features can be discussed as low-level traffic signals that separate benign and malicious flows.
+- Feature importance is model-specific, so describe it as supporting evidence rather than proof of causal network behavior.
 
 ## Limitations
 

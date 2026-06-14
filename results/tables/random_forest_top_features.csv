@@ -1,0 +1,16 @@
+feature,importance
+Max Packet Length,0.06629364997722853
+Destination Port,0.06537057315122374
+Init_Win_bytes_forward,0.053815089157295715
+Average Packet Size,0.04418848646092619
+Min Packet Length,0.04281450409812452
+Packet Length Std,0.040594213218021265
+Bwd Packet Length Min,0.04056946859860793
+Packet Length Variance,0.038758085146294384
+Init_Win_bytes_backward,0.036356979873991516
+Bwd Packet Length Std,0.030718230735944894
+Fwd Packet Length Mean,0.030347752904942748
+Avg Fwd Segment Size,0.030334240512876892
+Avg Bwd Segment Size,0.028700957105008338
+Subflow Fwd Bytes,0.026864298341091643
+Bwd Packet Length Max,0.023775885147645393
