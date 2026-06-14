@@ -1,0 +1,17 @@
+.venv/
+venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Raw datasets are too large for Git.
+data/raw/*
+!data/raw/.gitkeep
+*.pcap
+*.pcapng
+*.zip
+*.7z
+*.tar
+*.tar.gz
