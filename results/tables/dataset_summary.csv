@@ -1,0 +1,12 @@
+metric,value
+rows_input,2830743
+rows_after_missing_label_drop,2830743
+columns_input,80
+numeric_features_used,78
+dropped_all_missing_numeric_columns,1
+missing_numeric_values_imputed,5734
+benign_rows,2273097
+malicious_rows,557646
+label_column,Label
+rows_used_for_experiment,200000
+features_used_for_experiment,78
