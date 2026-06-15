@@ -2,11 +2,11 @@
 
 ## Research Question
 
-Can low-level network traffic features distinguish benign and malicious behavior in CICIDS2017-style data, and does Random Forest outperform Logistic Regression for binary intrusion detection?
+Can low-level network traffic features distinguish benign and malicious behavior in CICIDS2017 data, and does Random Forest outperform Logistic Regression for binary intrusion detection?
 
 ## Experimental Setup
 
-- Dataset: CICIDS2017-style CSV files placed in `data/raw/`.
+- Dataset: CICIDS2017 CSV files placed in `data/raw/`.
 - Target: Binary classification where `BENIGN` is encoded as `0` and all other attack labels are encoded as `1`.
 - Models:
   - Logistic Regression as an interpretable baseline with feature scaling.

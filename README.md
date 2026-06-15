@@ -1,6 +1,6 @@
 # Low-Level Traffic IDS
 
-This project compares Logistic Regression and Random Forest for binary intrusion detection using CICIDS2017-style CSV data. The target is simplified to:
+This project compares Logistic Regression and Random Forest for binary intrusion detection using CICIDS2017 CSV data. The target is simplified to:
 
 - `BENIGN` -> `0`
 - Any other label -> `1`

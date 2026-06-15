@@ -1,6 +1,6 @@
 # Dataset Information: CICIDS2017
 
-This project expects CICIDS2017-style CSV files with a label column such as `Label`.
+This project expects CICIDS2017 CSV files with a label column such as `Label`.
 
 ## Where to Put Data
 

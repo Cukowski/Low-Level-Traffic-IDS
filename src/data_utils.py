@@ -59,7 +59,7 @@ def find_label_column(columns: Iterable[str]) -> str:
 
 
 def clean_cicids_dataframe(df: pd.DataFrame) -> tuple[pd.DataFrame, pd.Series, pd.DataFrame]:
-    """Clean CICIDS2017-style data and return numeric features, binary labels, and summary."""
+    """Clean CICIDS2017 CSV data and return numeric features, binary labels, and summary."""
     if df.empty:
         raise ValueError("Input dataframe is empty.")
 

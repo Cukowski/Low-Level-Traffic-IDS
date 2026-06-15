@@ -20,13 +20,13 @@ RANDOM_STATE = 42
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Train Logistic Regression and Random Forest on CICIDS2017-style CSV data."
+        description="Train Logistic Regression and Random Forest on CICIDS2017 CSV data."
     )
     parser.add_argument(
         "--data",
         type=Path,
         default=Path("data/raw"),
-        help="CSV file or directory containing CICIDS2017-style CSV files.",
+        help="CSV file or directory containing CICIDS2017 CSV files.",
     )
     parser.add_argument(
         "--sample",
