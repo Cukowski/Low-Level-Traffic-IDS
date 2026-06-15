@@ -15,3 +15,6 @@ data/raw/*
 *.7z
 *.tar
 *.tar.gz
+
+# Keep citation links in Git, not copied papers.
+references/*.pdf
