@@ -18,12 +18,6 @@ python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-If your system `python` command is misconfigured on Windows, use the project environment directly:
-
-```powershell
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
 ## Dataset
 
 Place one or more CICIDS2017 CSV files manually in:
