@@ -401,7 +401,7 @@
     .gallery {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
 
     .artifact {
@@ -415,10 +415,22 @@
     .artifact img {
       background: white;
       display: block;
-      height: 280px;
+      height: 420px;
       object-fit: contain;
-      padding: 12px;
+      padding: 10px;
       width: 100%;
+    }
+
+    .artifact.wide {
+      grid-column: 1 / -1;
+    }
+
+    .artifact.wide img {
+      height: 560px;
+    }
+
+    .artifact.compact img {
+      height: 380px;
     }
 
     .artifact figcaption {
@@ -430,7 +442,7 @@
 
     .feature-layout {
       display: grid;
-      grid-template-columns: minmax(0, 0.78fr) minmax(340px, 1.22fr);
+      grid-template-columns: minmax(0, 0.64fr) minmax(460px, 1.36fr);
       gap: 20px;
     }
 
@@ -522,7 +534,12 @@
       }
 
       .artifact img {
-        height: 230px;
+        height: 360px;
+      }
+
+      .artifact.wide img,
+      .artifact.compact img {
+        height: 390px;
       }
     }
   </style>
@@ -646,19 +663,19 @@
         </div>
 
         <div class="gallery">
-          <figure class="artifact">
+          <figure class="artifact wide">
             <img src="results/figures/model_metrics_comparison.png" alt="Model metrics comparison chart">
             <figcaption>Random split metrics: the shiny result that still needs skepticism.</figcaption>
           </figure>
-          <figure class="artifact">
+          <figure class="artifact wide">
             <img src="results/figures/holdout_model_metrics_comparison.png" alt="Held-out model metrics comparison chart">
             <figcaption>Held-out DDoS validation: the model generalisation stress test.</figcaption>
           </figure>
-          <figure class="artifact">
+          <figure class="artifact compact">
             <img src="results/figures/confusion_matrix_random_forest.png" alt="Random Forest confusion matrix">
             <figcaption>Random Forest random-split confusion matrix: almost too calm.</figcaption>
           </figure>
-          <figure class="artifact">
+          <figure class="artifact compact">
             <img src="results/figures/holdout_confusion_matrix_random_forest.png" alt="Held-out Random Forest confusion matrix">
             <figcaption>Held-out Random Forest confusion matrix: now the report has something interesting to discuss.</figcaption>
           </figure>
