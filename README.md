@@ -51,6 +51,16 @@ python -m src.train_models --data data/raw --sample 200000
 
 The `--sample` argument is optional. It keeps runtime manageable by taking a stratified sample while preserving benign and malicious class proportions.
 
+## Held-out File Validation
+
+For a stricter supplementary check, use one CICIDS2017 source file as the test set and train on all other source files:
+
+```powershell
+python -m src.train_models --data data/raw --sample 200000 --holdout-source-pattern "Friday-WorkingHours-Afternoon-DDos"
+```
+
+Rows whose `source_file` contains the pattern become the held-out test set. The remaining files form the training pool. Holdout outputs are saved with `holdout_` filenames so the original random-split results are not overwritten.
+
 ## Outputs
 
 All generated outputs are saved under `results/`:

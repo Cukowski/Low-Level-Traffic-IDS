@@ -26,6 +26,11 @@ Running the training script creates:
 - `results/figures/model_metrics_comparison.png`
 - `results/tables/random_forest_top_features.csv`
 - `results/figures/random_forest_top_features.png`
+- `results/tables/holdout_metrics_summary.csv`
+- `results/tables/holdout_dataset_summary.csv`
+- `results/figures/holdout_confusion_matrix_logistic_regression.png`
+- `results/figures/holdout_confusion_matrix_random_forest.png`
+- `results/figures/holdout_model_metrics_comparison.png`
 
 ## Metrics to Discuss
 
@@ -49,6 +54,12 @@ Use the Random Forest feature importance outputs to support interpretation:
 - Feature importance highlights which cleaned numeric traffic features were most useful for the Random Forest model.
 - High-importance features can be discussed as low-level traffic signals that separate benign and malicious flows.
 - Feature importance is model-specific, so describe it as supporting evidence rather than proof of causal network behavior.
+
+Use the held-out source-file validation as a stricter supplementary check:
+
+- Held-out file validation is stricter than a random split because the test rows come from a source file excluded from training.
+- If performance drops, discuss generalisation limits and the possibility that random splits overestimate performance.
+- If performance remains high, state that it gives stronger support for the model comparison, but still does not prove real-world deployment performance.
 
 ## Limitations
 

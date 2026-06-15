@@ -40,6 +40,12 @@ def parse_args() -> argparse.Namespace:
         default=0.25,
         help="Fraction of rows held out for testing.",
     )
+    parser.add_argument(
+        "--holdout-source-pattern",
+        type=str,
+        default=None,
+        help="Optional source_file substring to use as a held-out test file.",
+    )
     return parser.parse_args()
 
 
@@ -126,6 +132,144 @@ def save_random_forest_feature_importance(
     return feature_importance
 
 
+def build_models() -> dict[str, Pipeline | RandomForestClassifier]:
+    return {
+        "Logistic Regression": Pipeline(
+            steps=[
+                ("scaler", StandardScaler()),
+                (
+                    "classifier",
+                    LogisticRegression(
+                        max_iter=1000,
+                        class_weight="balanced",
+                        random_state=RANDOM_STATE,
+                    ),
+                ),
+            ]
+        ),
+        "Random Forest": RandomForestClassifier(
+            n_estimators=100,
+            class_weight="balanced_subsample",
+            n_jobs=-1,
+            random_state=RANDOM_STATE,
+        ),
+    }
+
+
+def train_and_evaluate_models(
+    X_train: pd.DataFrame,
+    X_test: pd.DataFrame,
+    y_train: pd.Series,
+    y_test: pd.Series,
+    figures_dir: Path,
+    tables_dir: Path,
+    metrics_filename: str,
+    comparison_figure_filename: str,
+    confusion_prefix: str = "",
+    save_feature_importance: bool = False,
+) -> pd.DataFrame:
+    if y_train.nunique() < 2:
+        raise ValueError("Both BENIGN and MALICIOUS classes are required for training.")
+
+    metrics = []
+    for model_name, model in build_models().items():
+        print(f"Training {model_name}...")
+        model.fit(X_train, y_train)
+        predictions = model.predict(X_test)
+        metrics.append(compute_binary_metrics(model_name, y_test, predictions))
+
+        slug = model_name.lower().replace(" ", "_")
+        plot_confusion_matrix(
+            y_test,
+            predictions,
+            f"Confusion Matrix: {model_name}",
+            figures_dir / f"{confusion_prefix}confusion_matrix_{slug}.png",
+        )
+
+        if save_feature_importance and model_name == "Random Forest":
+            save_random_forest_feature_importance(
+                model,
+                X_train.columns,
+                tables_dir / "random_forest_top_features.csv",
+                figures_dir / "random_forest_top_features.png",
+            )
+
+    metrics_df = save_metrics_csv(metrics, tables_dir / metrics_filename)
+    plot_model_metrics(metrics_df, figures_dir / comparison_figure_filename)
+    return metrics_df
+
+
+def run_holdout_source_validation(
+    raw_df: pd.DataFrame,
+    holdout_pattern: str,
+    sample_size: int | None,
+    figures_dir: Path,
+    tables_dir: Path,
+) -> None:
+    if "source_file" not in raw_df.columns:
+        raise ValueError("Holdout validation requires a source_file column.")
+
+    holdout_mask = raw_df["source_file"].astype(str).str.contains(
+        holdout_pattern,
+        case=False,
+        regex=False,
+        na=False,
+    )
+    if not holdout_mask.any():
+        raise ValueError(f"No source_file values contain holdout pattern: {holdout_pattern}")
+    if holdout_mask.all():
+        raise ValueError("Holdout pattern matches every row, leaving no training data.")
+
+    train_raw = raw_df.loc[~holdout_mask].copy()
+    test_raw = raw_df.loc[holdout_mask].copy()
+    holdout_sources = sorted(test_raw["source_file"].astype(str).unique())
+
+    X_train, y_train, train_summary = clean_cicids_dataframe(train_raw)
+    X_test, y_test, test_summary = clean_cicids_dataframe(test_raw)
+
+    common_features = X_train.columns.intersection(X_test.columns)
+    if common_features.empty:
+        raise ValueError("No common numeric feature columns remain after holdout cleaning.")
+
+    X_train = X_train.loc[:, common_features]
+    X_test = X_test.loc[:, common_features]
+    X_train, y_train = stratified_sample(X_train, y_train, sample_size)
+
+    summary_rows = [
+        {"metric": "holdout_source_pattern", "value": holdout_pattern},
+        {"metric": "holdout_source_files", "value": "; ".join(holdout_sources)},
+        {"metric": "raw_training_pool_rows", "value": len(train_raw)},
+        {"metric": "raw_holdout_test_rows", "value": len(test_raw)},
+        {"metric": "training_rows_used", "value": len(X_train)},
+        {"metric": "holdout_test_rows_used", "value": len(X_test)},
+        {"metric": "common_numeric_features_used", "value": len(common_features)},
+        {"metric": "training_benign_rows", "value": int((y_train == 0).sum())},
+        {"metric": "training_malicious_rows", "value": int((y_train == 1).sum())},
+        {"metric": "holdout_benign_rows", "value": int((y_test == 0).sum())},
+        {"metric": "holdout_malicious_rows", "value": int((y_test == 1).sum())},
+    ]
+    train_summary = train_summary.assign(metric="train_" + train_summary["metric"])
+    test_summary = test_summary.assign(metric="test_" + test_summary["metric"])
+    holdout_summary = pd.concat(
+        [pd.DataFrame(summary_rows), train_summary, test_summary],
+        ignore_index=True,
+    )
+    holdout_summary.to_csv(tables_dir / "holdout_dataset_summary.csv", index=False)
+
+    train_and_evaluate_models(
+        X_train,
+        X_test,
+        y_train,
+        y_test,
+        figures_dir,
+        tables_dir,
+        metrics_filename="holdout_metrics_summary.csv",
+        comparison_figure_filename="holdout_model_metrics_comparison.png",
+        confusion_prefix="holdout_",
+        save_feature_importance=False,
+    )
+
+
 def main() -> int:
     args = parse_args()
 
@@ -136,6 +280,19 @@ def main() -> int:
 
     print(f"Loading data from {args.data}...")
     raw_df = load_cicids_csvs(args.data)
+
+    if args.holdout_source_pattern:
+        run_holdout_source_validation(
+            raw_df,
+            args.holdout_source_pattern,
+            args.sample,
+            figures_dir,
+            tables_dir,
+        )
+        print(f"Saved holdout metrics to {tables_dir / 'holdout_metrics_summary.csv'}")
+        print(f"Saved holdout figures to {figures_dir}")
+        return 0
+
     X, y, dataset_summary = clean_cicids_dataframe(raw_df)
     X, y = stratified_sample(X, y, args.sample)
 
@@ -160,53 +317,17 @@ def main() -> int:
         stratify=y,
     )
 
-    models = {
-        "Logistic Regression": Pipeline(
-            steps=[
-                ("scaler", StandardScaler()),
-                (
-                    "classifier",
-                    LogisticRegression(
-                        max_iter=1000,
-                        class_weight="balanced",
-                        random_state=RANDOM_STATE,
-                    ),
-                ),
-            ]
-        ),
-        "Random Forest": RandomForestClassifier(
-            n_estimators=100,
-            class_weight="balanced_subsample",
-            n_jobs=-1,
-            random_state=RANDOM_STATE,
-        ),
-    }
-
-    metrics = []
-    for model_name, model in models.items():
-        print(f"Training {model_name}...")
-        model.fit(X_train, y_train)
-        predictions = model.predict(X_test)
-        metrics.append(compute_binary_metrics(model_name, y_test, predictions))
-
-        slug = model_name.lower().replace(" ", "_")
-        plot_confusion_matrix(
-            y_test,
-            predictions,
-            f"Confusion Matrix: {model_name}",
-            figures_dir / f"confusion_matrix_{slug}.png",
-        )
-
-        if model_name == "Random Forest":
-            save_random_forest_feature_importance(
-                model,
-                X_train.columns,
-                tables_dir / "random_forest_top_features.csv",
-                figures_dir / "random_forest_top_features.png",
-            )
-
-    metrics_df = save_metrics_csv(metrics, tables_dir / "metrics_summary.csv")
-    plot_model_metrics(metrics_df, figures_dir / "model_metrics_comparison.png")
+    train_and_evaluate_models(
+        X_train,
+        X_test,
+        y_train,
+        y_test,
+        figures_dir,
+        tables_dir,
+        metrics_filename="metrics_summary.csv",
+        comparison_figure_filename="model_metrics_comparison.png",
+        save_feature_importance=True,
+    )
 
     print(f"Saved metrics to {tables_dir / 'metrics_summary.csv'}")
     print(f"Saved figures to {figures_dir}")
