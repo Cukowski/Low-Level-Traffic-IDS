@@ -1,6 +1,23 @@
 # References
 
-This directory intentionally stores public citation links instead of PDF copies.
+This directory keeps only public-safe reference material:
+
+- Open-access PDFs that are appropriate to redistribute with the repository.
+- DOI or index links for papers whose PDFs should not be copied into a public repo.
+
+## Open-Access PDFs Kept Locally
+
+- Layeghy, S. and Portmann, M. (2022). On Generalisability of Machine Learning-Based Network Intrusion Detection Systems.
+  Local file: `On_generalisability_of_machine_learning-based_network_intrusion_detection_systems.pdf`
+
+- Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. *Journal of Machine Learning Research*.
+  Local file: `Scikit-learn_Machine_Learning_in_Python.pdf`
+
+- Xu, Z. and Liu, Y. (2025). Robust Anomaly Detection in Network Traffic: Evaluating Machine Learning Models on CICIDS2017.
+  Local file: `Robust_anomaly_detection_in_network_traffic-Evaluating_machine_learning_models_on_CICIDS2017.pdf`
+  Index: [DBLP record](https://dblp.org/rec/journals/corr/abs-2512-06240)
+
+## Link-Only References
 
 - Breiman, L. (2001). Random Forests. *Machine Learning*.
   DOI: [10.1023/A:1010933404324](https://doi.org/10.1023/A:1010933404324)
@@ -19,6 +36,3 @@ This directory intentionally stores public citation links instead of PDF copies.
 
 - Sharafaldin, I., Lashkari, A. H. and Ghorbani, A. A. (2018). Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization.
   DOI: [10.5220/0006639801080116](https://doi.org/10.5220/0006639801080116)
-
-- Xu, Z. and Liu, Y. (2025). Robust Anomaly Detection in Network Traffic: Evaluating Machine Learning Models on CICIDS2017.
-  Index: [DBLP record](https://dblp.org/rec/journals/corr/abs-2512-06240)

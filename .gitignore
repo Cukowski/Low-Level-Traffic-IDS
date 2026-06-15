@@ -18,3 +18,6 @@ data/raw/*
 
 # Keep citation links in Git, not copied papers.
 references/*.pdf
+!references/On_generalisability_of_machine_learning-based_network_intrusion_detection_systems.pdf
+!references/Robust_anomaly_detection_in_network_traffic-Evaluating_machine_learning_models_on_CICIDS2017.pdf
+!references/Scikit-learn_Machine_Learning_in_Python.pdf
