@@ -35,6 +35,35 @@ data/raw/Monday-WorkingHours.pcap_ISCX.csv
 data/raw/Tuesday-WorkingHours.pcap_ISCX.csv
 ```
 
+## Project Structure
+
+```text
+Low-Level-Traffic-IDS/
+|-- data/
+|   |-- README.md
+|   `-- raw/
+|       `-- .gitkeep
+|-- docs/
+|   |-- Proposal.pdf
+|   `-- first_draft_notes.md
+|-- notebooks/
+|   `-- 01_cicids2017_experiment.ipynb
+|-- references/
+|   `-- cited PDFs
+|-- results/
+|   |-- figures/
+|   `-- tables/
+|-- src/
+|   |-- __init__.py
+|   |-- data_utils.py
+|   |-- inspect_cicids2017.py
+|   |-- metrics.py
+|   `-- train_models.py
+|-- .gitignore
+|-- README.md
+`-- requirements.txt
+```
+
 ## Run the Experiment
 
 Run the full experiment from the repository root:
@@ -66,9 +95,16 @@ results/
     confusion_matrix_logistic_regression.png
     confusion_matrix_random_forest.png
     model_metrics_comparison.png
+    random_forest_top_features.png
+    holdout_confusion_matrix_logistic_regression.png
+    holdout_confusion_matrix_random_forest.png
+    holdout_model_metrics_comparison.png
   tables/
     dataset_summary.csv
     metrics_summary.csv
+    random_forest_top_features.csv
+    holdout_dataset_summary.csv
+    holdout_metrics_summary.csv
 ```
 
 ## Method
@@ -88,3 +124,17 @@ The modeling code uses a stratified train/test split. Logistic Regression is tra
 ## Notebook
 
 The notebook `notebooks/01_cicids2017_experiment.ipynb` mirrors the script workflow and is intended for exploration and report screenshots.
+
+## References
+
+PDF copies of the cited literature are stored in `references/`.
+
+- Breiman, L. (2001). Random Forests. *Machine Learning*.
+- Buczak, A. L. and Guven, E. (2016). A Survey of Data Mining and Machine Learning Methods for Cyber Security Intrusion Detection. *IEEE Communications Surveys & Tutorials*.
+- Chandola, V., Banerjee, A. and Kumar, V. (2009). Anomaly Detection: A Survey. *ACM Computing Surveys*.
+- Farnaaz, N. and Jabbar, M. A. (2016). Random Forest Modeling for Network Intrusion Detection System. *Procedia Computer Science*.
+- Layeghy, S. and Portmann, M. (2022). On Generalisability of Machine Learning-Based Network Intrusion Detection Systems.
+- Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. *Journal of Machine Learning Research*.
+- Powers, D. M. W. (2011). Evaluation: From Precision, Recall and F-Measure to ROC, Informedness, Markedness and Correlation.
+- Sharafaldin, I., Lashkari, A. H. and Ghorbani, A. A. (2018). Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization. *ICISSP*.
+- Xu, Z. and Liu, Y. (2025). Robust Anomaly Detection in Network Traffic: Evaluating Machine Learning Models on CICIDS2017.
