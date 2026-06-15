@@ -60,6 +60,7 @@ Low-Level-Traffic-IDS/
 |   |-- metrics.py
 |   `-- train_models.py
 |-- .gitignore
+|-- index.html
 |-- README.md
 `-- requirements.txt
 ```
@@ -124,6 +125,10 @@ The modeling code uses a stratified train/test split. Logistic Regression is tra
 ## Notebook
 
 The notebook `notebooks/01_cicids2017_experiment.ipynb` mirrors the script workflow and is intended for exploration and report screenshots.
+
+## GitHub Pages Portfolio
+
+The root `index.html` file provides a static, interactive project portfolio for GitHub Pages. It uses the committed result tables and figures under `results/` and does not require a build step.
 
 ## References
 
