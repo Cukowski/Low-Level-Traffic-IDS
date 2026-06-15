@@ -471,29 +471,59 @@
       text-align: right;
     }
 
-    .downloads {
+    .previews {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
     }
 
-    .download {
+    .preview-card {
       background: #fbfaf7;
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      padding: 14px;
+      overflow: hidden;
+    }
+
+    .preview-card.feature-preview {
+      grid-column: 1 / -1;
+    }
+
+    .preview-head {
+      align-items: center;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+    }
+
+    .preview-head h3 {
+      font-size: 1rem;
+      margin: 0;
+    }
+
+    .preview-head a {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
       text-decoration: none;
     }
 
-    .download b {
-      display: block;
-      margin-bottom: 5px;
+    .table-scroll {
+      overflow-x: auto;
+      padding: 0 16px 10px;
     }
 
-    .download span {
-      color: var(--muted);
-      display: block;
-      font-size: 0.82rem;
+    .preview-table th,
+    .preview-table td {
+      padding-right: 18px;
+      white-space: nowrap;
+    }
+
+    .preview-table td:not(:first-child),
+    .preview-table th:not(:first-child) {
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 0.78rem;
     }
 
     footer {
@@ -525,8 +555,12 @@
       }
 
       .gallery,
-      .downloads {
+      .previews {
         grid-template-columns: 1fr;
+      }
+
+      .preview-card.feature-preview {
+        grid-column: auto;
       }
 
       .metric-row {
@@ -569,7 +603,7 @@
         </p>
         <div class="cta-row">
           <a class="button primary" href="#results">Inspect the scoreboard</a>
-          <a class="button secondary" href="README.md">Read the repo notes</a>
+          <a class="button secondary" href="https://github.com/Cukowski/Low-Level-Traffic-IDS">Open the GitHub repo</a>
         </div>
       </div>
 
@@ -716,26 +750,136 @@
     <section id="repo">
       <div class="shell">
         <div class="section-head">
-          <h2>Portfolio links</h2>
+          <h2>Table previews</h2>
           <p>
-            The page is static and GitHub Pages friendly. It can live at the repository root
-            and travel with the same results it presents.
+            The page is static and GitHub Pages friendly. These compact previews show
+            the CSV results without throwing you into raw comma-land immediately.
           </p>
         </div>
 
-        <div class="downloads">
-          <a class="download" href="results/tables/metrics_summary.csv">
-            <b>Random split metrics</b>
-            <span>results/tables/metrics_summary.csv</span>
-          </a>
-          <a class="download" href="results/tables/holdout_metrics_summary.csv">
-            <b>Held-out metrics</b>
-            <span>results/tables/holdout_metrics_summary.csv</span>
-          </a>
-          <a class="download" href="results/tables/random_forest_top_features.csv">
-            <b>Feature importances</b>
-            <span>results/tables/random_forest_top_features.csv</span>
-          </a>
+        <div class="previews">
+          <article class="preview-card">
+            <div class="preview-head">
+              <h3>Random split metrics</h3>
+              <a href="results/tables/metrics_summary.csv">source CSV</a>
+            </div>
+            <div class="table-scroll">
+              <table class="preview-table">
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                    <th>FPR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Logistic Regression</td>
+                    <td>0.911</td>
+                    <td>0.701</td>
+                    <td>0.952</td>
+                    <td>0.808</td>
+                    <td>0.100</td>
+                  </tr>
+                  <tr>
+                    <td>Random Forest</td>
+                    <td>0.999</td>
+                    <td>0.998</td>
+                    <td>0.995</td>
+                    <td>0.996</td>
+                    <td>0.001</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="preview-card">
+            <div class="preview-head">
+              <h3>Held-out DDoS metrics</h3>
+              <a href="results/tables/holdout_metrics_summary.csv">source CSV</a>
+            </div>
+            <div class="table-scroll">
+              <table class="preview-table">
+                <thead>
+                  <tr>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                    <th>Precision</th>
+                    <th>Recall</th>
+                    <th>F1</th>
+                    <th>FPR</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Logistic Regression</td>
+                    <td>0.935</td>
+                    <td>0.897</td>
+                    <td>0.999</td>
+                    <td>0.946</td>
+                    <td>0.150</td>
+                  </tr>
+                  <tr>
+                    <td>Random Forest</td>
+                    <td>0.793</td>
+                    <td>0.999</td>
+                    <td>0.635</td>
+                    <td>0.777</td>
+                    <td>0.001</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+
+          <article class="preview-card feature-preview">
+            <div class="preview-head">
+              <h3>Random Forest feature importance preview</h3>
+              <a href="results/tables/random_forest_top_features.csv">source CSV</a>
+            </div>
+            <div class="table-scroll">
+              <table class="preview-table">
+                <thead>
+                  <tr>
+                    <th>Feature</th>
+                    <th>Importance</th>
+                    <th>Small human translation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Max Packet Length</td>
+                    <td>6.63%</td>
+                    <td>Big packets were apparently not subtle.</td>
+                  </tr>
+                  <tr>
+                    <td>Destination Port</td>
+                    <td>6.54%</td>
+                    <td>The destination mattered. Networking remains networking.</td>
+                  </tr>
+                  <tr>
+                    <td>Init_Win_bytes_forward</td>
+                    <td>5.38%</td>
+                    <td>TCP window behavior joined the evidence board.</td>
+                  </tr>
+                  <tr>
+                    <td>Average Packet Size</td>
+                    <td>4.42%</td>
+                    <td>Traffic shape helped separate the classes.</td>
+                  </tr>
+                  <tr>
+                    <td>Min Packet Length</td>
+                    <td>4.28%</td>
+                    <td>Even the small packets had something to say.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
         </div>
       </div>
     </section>
